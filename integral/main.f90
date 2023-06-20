@@ -3,22 +3,24 @@ program integral
 
   external f
 
-  real*8 :: xmin, xmax, x, fx, delx, tempr, f
+  real*8 :: xmin, xmax, x, fx, deltax, tempr, f
   integer :: n, i
 
-  xmin = 1.0
-  xmax = 2.0
-  n = 10000
+  xmin = 0.0
+  xmax = 10.0
+  n = 1000000
 
-  delx = (xmax - xmin) / dfloat(n-1)
+  deltax = (xmax - xmin) / dfloat(n-1)
 
   tempr = 0.0
   do i = 1, n
-    x = xmin + dfloat(i-1)*delx
-    tempr = tempr + delx * f(x)
+    x = xmin + dfloat(i-1)*deltax
+    tempr = tempr + deltax * f(x)
   enddo
 
-  print *, tempr
+  print *, "area ret = ", tempr
+
+  call system('gfortran maintrap.f90 && ./a.out')
 
 end program integral
 
@@ -27,5 +29,5 @@ real*8 function f(x)
 
   real*8 :: x
 
-  f = x**2 - 1.0
+  f = x**3 * sin(x)
 end function
