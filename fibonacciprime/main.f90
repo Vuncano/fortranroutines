@@ -1,7 +1,7 @@
 program fibonacci
   implicit none
 
-  integer :: x, f, f1, f2, fib
+  integer :: x, f, f1, f2, fib, divisor_teste
   integer :: i, n, i2
   character :: prime*9
   
@@ -18,10 +18,17 @@ program fibonacci
 
     prime = "prime"
 
-    do i2 = 1, n
-      if (f.eq.(f/2)*2) then
+    do i2 = 2, sqrt(float(f))
+      divisor_teste = i2
+
+      if (f == (f/divisor_teste)*divisor_teste) then
         prime = "not prime"
       end if
+      
+      if(f == 1) then
+        prime = "not prime"
+      end if
+
     end do
 
     write(*,*) f, prime
