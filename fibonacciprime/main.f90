@@ -25,11 +25,11 @@ program fibonacci
         prime = "not prime"
       end if
       
-      if(f == 1) then
-        prime = "not prime"
-      end if
-
     end do
+
+    if(f == 1) then
+      prime = "not prime"
+    end if
 
     write(*,*) f, prime
 
