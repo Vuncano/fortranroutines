@@ -1,50 +1,57 @@
 program taylor
   implicit none
   
-  external f
+  external freal
   external fact
 
-  real :: f, h, x, min, max, delx, x0, t, fact, dfs, dfsi
-  integer :: n, i
+  real*8 :: x, x0, freal, derf, taylor_term, min, max, deltax, fact
+  integer :: i, i2, n, npoints
 
-  min = -10.0
-  max = 10.0
-  n = 8
-  delx = (max - min) / float(n)
-  h = 2 * sqrt(EPSILON(1.0))
-
-  x0 = 0
-  dfs = (f(x0+h) - f(x0)) / h
+  n = 7
+  x0 = 0.0d0
   
+  min = -10
+  max = 10
+  npoints = 1000
+  deltax = (max - min) / dfloat(npoints)
+
   do i = 0, n
+    call nderivative(freal, x0, i, derf)
 
-    dfs = (dfs+h - dfs) / h
+    do i2 = 1, npoints
+      x = min + ((i2 - 1) * deltax)
 
-    t = t + (dfs / fact(i)) * (x - x0)**i
+      taylor_term = (derf / fact(i)) * (x - x0)**i
+    end do
 
-    
-    print *, i, dfs
   enddo
 
 
 end program taylor
 
-real function f(x0)
+real*8 function freal(x0)
   implicit none
 
   real :: x0
 
-  f = sin(x0)
+  freal = sin(x0)
 end function
 
-real function fact(i)
+real*8 function fact(i)
   integer, INTENT(IN) :: i
 
   integer :: n
   
   fact = 1.0
 
+  if (i == 0) then
+    fact = 1
+    return
+  end if
+
   do n = 2, i
     fact = fact * n
   end do
 end function fact
+
+include "der.f90" 
