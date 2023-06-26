@@ -2,7 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 plt.plot(*np.loadtxt("sin.dat", unpack=True), label="sin")
-plt.plot(*np.loadtxt("taylor.dat", unpack=True))
+plt.plot(*np.loadtxt("taylor01.dat", unpack=True), label="taylor 1")
+plt.plot(*np.loadtxt("taylor02.dat", unpack=True), label="taylor 2")
+plt.plot(*np.loadtxt("taylor03.dat", unpack=True), label="taylor 3")
+plt.plot(*np.loadtxt("taylor04.dat", unpack=True), label="taylor 4")
+plt.plot(*np.loadtxt("taylor05.dat", unpack=True), label="taylor 5")
 # plt.plot(*np.loadtxt("2taylor.dat", unpack=True))
 # plt.plot(*np.loadtxt("3taylor.dat", unpack=True))
 # plt.plot(*np.loadtxt("4taylor.dat", unpack=True))

@@ -8,7 +8,7 @@ program taylor
   integer :: i, i2, n, npoints, derf_ordem
 
   ! open(unit = 10, file = '0taylor.dat') 
-  open(unit = 11, file = '1taylor.dat') 
+  ! open(unit = 11, file = '1taylor.dat') 
   ! open(unit = 12, file = '2taylor.dat') 
   ! open(unit = 13, file = '3taylor.dat') 
   ! open(unit = 14, file = '4taylor.dat') 
@@ -19,11 +19,11 @@ program taylor
   ! open(unit = 19, file = '9taylor.dat') 
   open(unit = 20, file = 'sin.dat') 
 
-  n = 7
+  n = 5
   x0 = 0.0d0
   
-  min = -10
-  max = 10
+  min = -10.0d0
+  max = 10.0d0
   npoints = 1000
   deltax = (max - min) / dfloat(npoints)
 
@@ -51,8 +51,9 @@ program taylor
   end do
 
   x = 0.0d0
+  y = 0.0d0
   do i = 1, npoints
-    x = min + ((dfloat(i-1)) * deltax)
+    x = min + ((dfloat(i)-1) * deltax)
 
     y = freal(x)
 
@@ -70,6 +71,8 @@ program taylor
   ! close(18)
   ! close(19)
   close(20)
+
+  call system("python plot.py")
 
 end program taylor
 
@@ -128,6 +131,8 @@ end subroutine taylor_serie
 subroutine plot_taylor(f, x0, min, max, nx, n)
   implicit none
 
+  external integer_to_string
+
   interface
     function f(x) result(y)
       implicit none
@@ -136,6 +141,7 @@ subroutine plot_taylor(f, x0, min, max, nx, n)
     end function f
   end interface
 
+  character(len=2) :: integer_to_string
   real*8, intent(in) :: x0, min, max
   integer, intent(in) :: nx, n
   real*8 :: delx, x, y
@@ -143,7 +149,7 @@ subroutine plot_taylor(f, x0, min, max, nx, n)
 
   delx = (max - min)/dfloat(nx)
 
-  open(unit = 1, file="taylor.dat")
+  open(unit = 1, file="taylor"//trim(integer_to_string(n))//".dat")
 
   do i = 1, nx
     x = min + dfloat(i-1)*delx
@@ -154,5 +160,17 @@ subroutine plot_taylor(f, x0, min, max, nx, n)
 
   close(1)
 end subroutine plot_taylor
+
+function integer_to_string(i) result(a)
+  implicit none
+
+  integer :: i
+  character(len=2) :: a
+  character(len=8) :: fmt
+
+  fmt = '(I2.2)'
+
+  write(a,fmt) i
+end function integer_to_string
 
 include "der.f90" 
