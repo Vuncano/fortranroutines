@@ -7,7 +7,7 @@ program test
   integer :: n
 
   x0 = 2.0d0
-  n = 0
+  n = 1
 
   call nderivative(f1, x0, n, derf)
 

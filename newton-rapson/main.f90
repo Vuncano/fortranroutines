@@ -42,7 +42,7 @@ real*8 function f1(x)
 
   real*8 :: x
 
-  !f1 = exp(x) - x - 2
+  ! f1 = exp(x) - x - 2
 
   f1 = x**2 - 4
 

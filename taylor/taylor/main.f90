@@ -4,8 +4,8 @@ program taylor
   external freal
   external fact
 
-  real*8 :: x, x0, freal, derf, taylor_term, min, max, deltax, fact, y, taylor_plot
-  integer :: i, i2, n, npoints, derf_ordem
+  real*8 :: x, x0, freal, derf,  min, max, deltax, fact, y 
+  integer :: i, n, npoints
 
   ! open(unit = 10, file = '0taylor.dat') 
   ! open(unit = 11, file = '1taylor.dat') 
@@ -20,7 +20,7 @@ program taylor
   open(unit = 20, file = 'sin.dat') 
 
   n = 5
-  x0 = 0.0d0
+  x0 = 2.5d0
   
   min = -10.0d0
   max = 10.0d0
@@ -61,7 +61,7 @@ program taylor
   enddo
 
   ! close(10)
-  close(11)
+  ! close(11)
   ! close(12)
   ! close(13)
   ! close(14)
@@ -124,7 +124,9 @@ subroutine taylor_serie(f, x, x0, n, taylor)
   do i = 0, n
     call nderivative(f, x0, i, derf)
 
-    taylor = taylor + (derf / fact(i)) * (x - x0)**i
+    if (derf .ne. 0) then
+      taylor = taylor + (derf / fact(i)) * (x - x0)**i
+    end if
   end do
 end subroutine taylor_serie
 

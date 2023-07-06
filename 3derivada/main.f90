@@ -3,7 +3,7 @@ program df
 
   external f1
 
-  real*8 :: f1, h, x, df1, df2, df3, min, max, delx
+  real*8 :: f1, h, x, df1, df2, df3, min, max, delx, h2
   integer :: n, i
 
   open(unit = 1, file = 'df1.dat')
@@ -15,6 +15,7 @@ program df
   n = 100
   delx = (max - min) / dfloat(n)
   h = 2 * sqrt(epsilon(1.0d0))
+  h2 = 1.0d-3
 
   do i = 1, n
     x = min + (i-1) * delx
@@ -37,7 +38,7 @@ program df
   do i = 1, n
     x = min + (i-1) * delx
 
-    df3 = (f1(x+h) - f1(x-h)) / 2*h
+    df3 = (f1(x+h2) - f1(x-h2))/(2.0d0*h2)
 
     write(3,*) x, df3
 
