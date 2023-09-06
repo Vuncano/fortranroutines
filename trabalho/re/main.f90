@@ -1,48 +1,41 @@
 program trabalho
   implicit none
 
-  external funcao
+  ! external find_roots
 
-  real*8 :: nc, nf, m0,lambda, g, k, min 
-  real*8 :: max, delta, m, pi, resultintegral, f, root, froot, funcao, y
-  integer :: n, i
+  real*8 :: min, max, delta, rootf, m, root, find_roots, dumb
+  integer :: i, n
 
   open(unit=10, file="graph.dat")
 
-  nc = 3
-  nf = 2
-  m0 = 0.0056
-  lambda = 0.5079
-  g = 2.44/(lambda**2)
-  n = 10000
-
-  pi = 4.0d0 * datan(1.0d0)
-
-  min = 0.0d0
-  max = 10.0d0
-  delta = (max - min) / dfloat(n)
+  min = 1.0d-8
+  max = 2.0d0
+  n = 1000
+  delta = (max - min)/dfloat(n)
 
   do i = 1, n
-    m = min + ((i-1) * delta)
-
-    call integral(0.0d0, lambda, n, m, resultintegral)
-
-    y = m - m0 - (((4*g*nc*nf*m) / (2 * pi**2)) * resultintegral)
-
-    ! y = funcao(m)
-
-    write(10, *) m, y
-
+     m = min + (i-1) * delta
+     write(10, *) m, rootf(m)
   end do
 
   close(10)
 
-end program trabalho
+  ! root = find_roots(0.25d0, 0.5d0)
+  ! print *, root
 
-real*8 function funcao(m)
+  call newton_raphson(rootf, 0.5d0, 1.0d-9, i, root, dumb)
 
-  real*8, intent(in) :: m
-  real*8 :: resultintegral, Nc, Nf, M0, lambda, g, pi
+  write(*,*) "root = ", root
+  write(*,*) "f(root) = ", rootf(root)
+
+end program
+
+function rootf(M) result(f)
+  implicit none
+
+  external integral
+
+  real*8 :: M, f, int, Nc, Nf, M0, lambda, G, pi, integral
 
   Nc = 3
   Nf = 2
@@ -50,19 +43,37 @@ real*8 function funcao(m)
   lambda = 0.5079
   g = 2.44/(lambda**2)
 
-  pi = 4.d0 * datan(1.d0)  !defines pi as 4 times arctg(1)
+  pi = 4.0 * datan(1.0d0)
 
-  call integral(0.0d0, lambda, 100000, m, resultintegral)
-
-  funcao = m - m0 - (((4*g*nc*nf*m) / (2 * pi**2)) * resultintegral)
-
+  f = M - M0 - ((4*G*Nc*Nf*M)/(2*pi**2))*integral(0.0d0, lambda, 10000, M)
 end function
 
-real*8 function f(x,m)
-  real*8 :: x, m
+function integral(xmin, xmax, n, M) result(sum)
+  implicit none
 
-  f = (x**2) / sqrt(x**2 + m**2)
+  external intf
 
+  real*8 :: xmin, xmax, sum, delx, m, x, intf
+  integer :: n, i
+
+  delx = (xmax - xmin) / n
+  sum = 0.0d0
+
+    do i = 1, n
+     x = xmin + (i-1)*delx
+     sum = sum + intf(x, M)
+  end do
+
+  sum = (delx / 2.0d0)*(intf(xmin, M) + 2.0d0*sum + intf(xmax, M))
 end function
 
-include "integral.f90"
+function intf(x, M) result(y)
+  implicit none
+
+  real*8 :: x, m, y
+
+  y = x**2 / sqrt(M**2 + x**2)
+end function
+
+include "newton-raphson.f90"
+

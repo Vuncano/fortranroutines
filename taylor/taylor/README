@@ -1,0 +1,11 @@
+para que o codigo plote o grafico "out of the box" é necessario ter o python instalado no pc e também as bibliotecas numpy e matplotlib.
+isso feito, quando compilar e rodar o codigo (gfortran main.f90 && ./a.out), o plot será feito "out of the box"
+
+é possivel trocar o numero de termos plotados alterando o valor de n em main.f90 na linha 22
+
+é possivel trocar o valor de x0 na linha 23 de main.f90
+
+é possivel mudar a função na linha 84 de main.f90
+
+
+att., Patrike Luis Britz

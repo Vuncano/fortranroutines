@@ -19,8 +19,8 @@ program taylor
   ! open(unit = 19, file = '9taylor.dat') 
   open(unit = 20, file = 'sin.dat') 
 
-  n = 5
-  x0 = 2.5d0
+  n = 7
+  x0 = 0
   
   min = -10.0d0
   max = 10.0d0

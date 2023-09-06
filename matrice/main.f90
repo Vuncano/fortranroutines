@@ -14,6 +14,12 @@ program matrice
 
   ! the follolwing do chain makes the "foward manipulation"
   do k = 1, n-1
+    do i = k+1, n
+
+    c = a(i, k) / a(k, k)
+    a(i, k) = 0.0d0
+
+    b(i) = b(i) 
   
   
   
